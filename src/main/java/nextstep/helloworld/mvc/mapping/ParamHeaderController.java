@@ -1,5 +1,6 @@
 package nextstep.helloworld.mvc.mapping;
 
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,13 +16,14 @@ public class ParamHeaderController {
         return ResponseEntity.ok().body("message");
     }
 
-    @GetMapping(path = "/message", params = "name=hello")
-    public ResponseEntity<String> messageForParam() {
-        return ResponseEntity.ok().body("hello");
+    @GetMapping(path = "/message", params = "name")
+    public ResponseEntity<String> messageForParam(@RequestParam("name") String name) {
+        return ResponseEntity.ok().body(name);
     }
 
-    @GetMapping(path = "message", headers = {"HEADER=hi"})
-    public ResponseEntity<String> messageForHeader() {
-        return ResponseEntity.ok().body("hi");
+    @GetMapping(path = "/message", headers = "HEADER")
+    public ResponseEntity<String> messageForHeader(HttpServletRequest request) {
+        final String header = request.getHeader("HEADER");
+        return ResponseEntity.ok().body(header);
     }
 }

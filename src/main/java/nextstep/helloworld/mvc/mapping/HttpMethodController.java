@@ -15,7 +15,8 @@ public class HttpMethodController {
     @PostMapping("/http-method/users")
     public ResponseEntity createUser(@RequestBody User user) {
         Long id = 1L;
-        return ResponseEntity.created(URI.create("/users/" + id)).build();
+        return ResponseEntity.created(URI.create("/users/" + id))
+                .build();
     }
 
     @GetMapping("/http-method/users")
