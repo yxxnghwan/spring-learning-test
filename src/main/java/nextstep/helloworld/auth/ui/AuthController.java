@@ -1,6 +1,5 @@
 package nextstep.helloworld.auth.ui;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import nextstep.helloworld.auth.application.AuthService;
 import nextstep.helloworld.auth.application.AuthorizationException;
@@ -64,7 +63,6 @@ public class AuthController {
         // TODO: Session을 통해 인증 정보 조회하기 (key: SESSION_KEY)
         final HttpSession session = request.getSession();
         String email = (String) session.getAttribute(SESSION_KEY);
-        System.out.println("#####email" + email);
         MemberResponse member = authService.findMember(email);
         return ResponseEntity.ok().body(member);
     }
@@ -82,7 +80,7 @@ public class AuthController {
      * }
      */
     @PostMapping("/login/token")
-    public ResponseEntity tokenLogin(@RequestBody TokenRequest tokenRequest) {
+    public ResponseEntity<TokenResponse> tokenLogin(@RequestBody TokenRequest tokenRequest) {
         // TODO: TokenRequest 값을 메서드 파라미터로 받아오기 (hint: @RequestBody)
         TokenResponse tokenResponse = authService.createToken(tokenRequest);
         return ResponseEntity.ok().body(tokenResponse);
@@ -96,7 +94,7 @@ public class AuthController {
      * accept: application/json
      */
     @GetMapping("/members/you")
-    public ResponseEntity findYourInfo(HttpServletRequest request) {
+    public ResponseEntity<MemberResponse> findYourInfo(HttpServletRequest request) {
         // TODO: authorization 헤더의 Bearer 값을 추출하기
         final String bearer = request.getHeader("authorization");
         final String token = bearer.split(" ")[1];
